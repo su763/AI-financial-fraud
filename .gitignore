@@ -1,0 +1,9 @@
+# Ignore the large dataset
+data/creditcard.csv
+
+# Ignore the heavy model files
+models/*.pkl
+
+# Ignore Python cache
+__pycache__/
+*.pyc
