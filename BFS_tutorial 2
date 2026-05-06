@@ -1,0 +1,132 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyM0wQqyk6W0OKPTwfLt7VPT",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/su763/AI-financial-fraud/blob/main/BFS_tutorial%202\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 8,
+      "metadata": {
+        "id": "f7uDNqP64rL9"
+      },
+      "outputs": [],
+      "source": [
+        "from collections import deque\n",
+        "graph = {\n",
+        "    'A': [('B', 5), ('C', 10)],\n",
+        "    'B': [('A', 5), ('D', 8)],\n",
+        "    'C': [('A', 10), ('D', 3)],\n",
+        "    'D': [('B', 8), ('C', 3)]\n",
+        "}"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from collections import deque\n",
+        "\n",
+        "def bfs(graph, start):\n",
+        "    visited = set()\n",
+        "    queue = deque([(start, [start], 0)])  # (current_node, path, distance)\n",
+        "\n",
+        "    visited.add(start)\n",
+        "\n",
+        "    results = {}\n",
+        "    visit_order = []\n",
+        "\n",
+        "    while queue:\n",
+        "        node, path, dist = queue.popleft()\n",
+        "        visit_order.append(node)\n",
+        "\n",
+        "        results[node] = (path, dist)\n",
+        "\n",
+        "        for neighbor, weight in graph[node]:\n",
+        "            if neighbor not in visited:\n",
+        "                visited.add(neighbor)\n",
+        "                queue.append((neighbor, path + [neighbor], dist + weight))\n",
+        "\n",
+        "    return visit_order, results"
+      ],
+      "metadata": {
+        "id": "csn9Lhw_6aQO"
+      },
+      "execution_count": 9,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "visit_order, results = bfs(graph, 'A')\n",
+        "print(\"Visit Order:\", visit_order)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "sGHLSRmr6gaA",
+        "outputId": "74e9c422-24ed-49ba-e7e0-32923f50e136"
+      },
+      "execution_count": 10,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Visit Order: ['A', 'B', 'C', 'D']\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "for city in results:\n",
+        "    path, dist = results[city]\n",
+        "    print(f\"A to {city}: Path = {path}, Distance = {dist} km\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "sgnF2THSZO8r",
+        "outputId": "b52d64bd-67f4-47e0-f9b5-c31db8677e0e"
+      },
+      "execution_count": 11,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "A to A: Path = ['A'], Distance = 0 km\n",
+            "A to B: Path = ['A', 'B'], Distance = 5 km\n",
+            "A to C: Path = ['A', 'C'], Distance = 10 km\n",
+            "A to D: Path = ['A', 'B', 'D'], Distance = 13 km\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
